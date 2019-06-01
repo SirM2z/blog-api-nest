@@ -1,0 +1,29 @@
+### register
+POST http://localhost:5000/api/auth/register HTTP/1.1
+content-type: application/x-www-form-urlencoded
+
+username=username
+&password=password
+
+### login
+POST http://localhost:5000/api/auth/login HTTP/1.1
+content-type: application/x-www-form-urlencoded
+
+username=username
+&password=password
+
+### upload file
+POST http://localhost:5000/api/upload
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwicm9sZXMiOltdLCJpYXQiOjE1NTkzOTk0OTcsImV4cCI6MTU1OTQ0MjY5N30.8zwfoj366h--GMVvefK26YUjuUw1FRXwHgxuoI50qjs
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="text"
+
+title
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="1.png"
+Content-Type: image/png
+
+< ./1.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
