@@ -13,14 +13,21 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
     const now = Date.now();
-    const { method, url } = req;
-    return next.handle().pipe(
-      tap(() => {
-        Logger.log(
-          `${method} ${url} ${Date.now() - now}ms`,
-          context.getClass().name,
+    // 过滤 GraphQL
+    if (req) {
+      const { method, url } = req;
+      return next
+        .handle()
+        .pipe(
+          tap(() =>
+            Logger.log(
+              `${method} ${url} ${Date.now() - now}ms`,
+              context.getClass().name,
+            ),
+          ),
         );
-      }),
-    );
+    } else {
+      return next.handle();
+    }
   }
 }

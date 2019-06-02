@@ -9,7 +9,6 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiService } from './api.service';
-import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('api')
@@ -22,7 +21,6 @@ export class ApiController {
   }
 
   @Post('upload')
-  @UseGuards(AuthGuard())
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file) {
     return {

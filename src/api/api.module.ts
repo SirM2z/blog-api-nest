@@ -1,23 +1,30 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
-import { PassportModule } from '@nestjs/passport';
 import { ApiController } from './api.controller';
 import { ApiService } from './api.service';
-import { SharedModule } from '../shared/shared.module';
-import { AuthModule } from '../auth/auth.module';
+import { UserModule } from '../user/user.module';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { HttpExceptionFilter } from '../shared/http-exception.filter';
+import { LoggingInterceptor } from '../shared/logging.interceptor';
 
 @Module({
-  controllers: [ApiController],
   imports: [
-    PassportModule.register({
-      defaultStrategy: 'jwt',
-    }),
     MulterModule.register({
       dest: process.env.UPLOAD_PATH,
     }),
-    SharedModule,
-    AuthModule,
+    UserModule,
   ],
-  providers: [ApiService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    ApiService,
+  ],
+  controllers: [ApiController],
 })
 export class ApiModule {}
