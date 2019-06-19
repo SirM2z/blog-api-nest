@@ -17,3 +17,10 @@ export class UserRo {
   roles: string;
   token?: string;
 }
+
+export class UserPaginateRo {
+  data: UserRo[];
+  pagination: {
+    total: number;
+  };
+}

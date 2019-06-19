@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
-import { UserRo, UserDTO } from './user.dto';
+import { UserRo, UserDTO, UserPaginateRo } from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -11,12 +11,20 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async listAll(page: number = 1, pageSize: number = 10): Promise<UserRo[]> {
-    const users = await this.userRepository.find({
+  async listAll(
+    page: number = 1,
+    pageSize: number = 10,
+  ): Promise<UserPaginateRo> {
+    const users = await this.userRepository.findAndCount({
       take: pageSize,
       skip: pageSize * (page - 1),
     });
-    return users.map(user => user.toResponseObject());
+    return {
+      data: users[0].map(user => user.toResponseObject()),
+      pagination: {
+        total: users[1],
+      },
+    };
   }
 
   async findOne(username: string): Promise<UserRo> {
