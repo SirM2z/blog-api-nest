@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import * as appConfig from '../../app.config';
 
 @Entity('user_tbl')
 export class UserEntity {
@@ -33,8 +34,8 @@ export class UserEntity {
 
   private get token() {
     const { id, username, roles } = this;
-    return sign({ id, username, roles }, process.env.SECRET_KEY, {
-      expiresIn: process.env.JWT_EXPIRESIN,
+    return sign({ id, username, roles }, appConfig.AUTH.jwtTokenSecret, {
+      expiresIn: appConfig.AUTH.expiresIn,
     });
   }
 

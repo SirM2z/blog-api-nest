@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
+import * as appConfig from '../app.config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -29,7 +30,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const token = auth.split(' ')[1];
-      const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+      const decoded = await jwt.verify(token, appConfig.AUTH.jwtTokenSecret);
       return decoded;
     } catch (error) {
       const message = 'Token error: ' + (error.message || error.name);

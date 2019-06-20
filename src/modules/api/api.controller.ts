@@ -8,8 +8,9 @@ import {
   Param,
   Res,
 } from '@nestjs/common';
-import { ApiService } from './api.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiService } from './api.service';
+import * as appConfig from '../../app.config';
 
 @Controller('api')
 export class ApiController {
@@ -24,12 +25,14 @@ export class ApiController {
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file) {
     return {
-      imgUrl: `http://localhost:${process.env.PORT}/api/file/${file.filename}`,
+      imgUrl: `http://localhost:${appConfig.APP.PORT}/api/file/${
+        file.filename
+      }`,
     };
   }
 
   @Get('file/:filepath')
   returnFile(@Param('filepath') file, @Res() res) {
-    return res.sendFile(file, { root: process.env.UPLOAD_PATH });
+    return res.sendFile(file, { root: appConfig.APP.UPLOAD_PATH });
   }
 }
