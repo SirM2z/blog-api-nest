@@ -1,3 +1,10 @@
+/**
+ * Logging interceptor.
+ * @file 日志拦截器
+ * @module interceptor/logging
+ * @author Ryan <https://github.com/sirm2z>
+ */
+
 import {
   CallHandler,
   ExecutionContext,

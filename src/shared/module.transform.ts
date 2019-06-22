@@ -3,7 +3,7 @@
  * @file 通用模块转换器
  * @description 用于兼容各种 Commomjs 包在 TS 下的不兼容问题
  * @module transform/module
- * @author Surmon <https://github.com/surmon-china>
+ * @author Ryan <https://github.com/sirm2z>
  */
 
 import * as path from 'path';

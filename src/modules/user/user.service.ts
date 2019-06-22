@@ -1,3 +1,10 @@
+/**
+ * User service.
+ * @file 用户模块服务
+ * @module module/user/service
+ * @author Ryan <https://github.com/sirm2z>
+ */
+
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
@@ -11,6 +18,7 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  // 列出用户
   async listAll(
     page: number = 1,
     pageSize: number = 10,
@@ -27,6 +35,7 @@ export class UserService {
     };
   }
 
+  // 查找某个用户
   async findOne(username: string): Promise<UserRo> {
     const user = await this.userRepository.findOne({
       where: { username },
@@ -34,6 +43,7 @@ export class UserService {
     return user.toResponseObject();
   }
 
+  // 用户登录
   async login(data: UserDTO): Promise<UserRo> {
     const { username, password } = data;
     const user = await this.userRepository.findOne({ where: { username } });
@@ -46,6 +56,7 @@ export class UserService {
     return user.toResponseObject(true);
   }
 
+  // 用户注册
   async register(data: UserDTO): Promise<UserRo> {
     const { username } = data;
     let user = await this.userRepository.findOne({ where: { username } });

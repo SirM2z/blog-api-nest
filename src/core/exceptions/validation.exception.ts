@@ -1,5 +1,12 @@
+/**
+ * Validation exception.
+ * @file 错误定制器
+ * @module exception/validation
+ * @author Ryan <https://github.com/sirm2z>
+ */
+
 import { HttpException, HttpStatus } from '@nestjs/common';
-import * as TEXT from '../constants/text.constant';
+import * as TEXT from '../../constants/text.constant';
 
 /**
  * @class ValidationException

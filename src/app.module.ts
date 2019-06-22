@@ -1,14 +1,25 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+/**
+ * App module.
+ * @file App 主模块
+ * @module app/module
+ * @author Ryan <https://github.com/sirm2z>
+ */
+
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as appConfig from './app.config';
-import { ApiModule } from './modules/api/api.module';
-import { CorsMiddleware } from './middlewares/cors.middleware';
+import { MulterModule } from '@nestjs/platform-express';
+import { AppController } from './app.controller';
+import { UserModule } from './modules/user/user.module';
+import * as APP_CONFIG from './app.config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(appConfig.POSTGRESQL), ApiModule],
+  imports: [
+    TypeOrmModule.forRoot(APP_CONFIG.POSTGRESQL),
+    MulterModule.register({
+      dest: APP_CONFIG.APP.UPLOAD_PATH,
+    }),
+    UserModule,
+  ],
+  controllers: [AppController],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CorsMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}

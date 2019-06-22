@@ -1,10 +1,17 @@
+/**
+ * User DTO.
+ * @file 用户模块数据传输对象
+ * @module module/user/DTO
+ * @author Ryan <https://github.com/sirm2z>
+ */
+
 import { IsNotEmpty } from 'class-validator';
 
 export class UserDTO {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: '用户名？' })
   username: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: '密码？' })
   password: string;
 
   roles?: string;

@@ -1,13 +1,22 @@
+/**
+ * User controller.
+ * @file 用户模块控制器
+ * @module module/user/controller
+ * @author Ryan <https://github.com/sirm2z>
+ */
+
 import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AuthGuard } from '../../shared/auth.guard';
 import { UserDTO } from './user.dto';
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { HttpProcessor } from '../../core/decorators/http.decorator';
 
-@Controller('api')
+@Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('user')
+  @HttpProcessor.paginate()
   @UseGuards(new AuthGuard())
   showAllUsers(
     @Query('page') page: number,

@@ -1,3 +1,10 @@
+/**
+ * User entity.
+ * @file 用户模块实体
+ * @module module/user/entity
+ * @author Ryan <https://github.com/sirm2z>
+ */
+
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,7 +14,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
-import * as appConfig from '../../app.config';
+import * as APP_CONFIG from '../../app.config';
 
 @Entity('user_tbl')
 export class UserEntity {
@@ -34,8 +41,8 @@ export class UserEntity {
 
   private get token() {
     const { id, username, roles } = this;
-    return sign({ id, username, roles }, appConfig.AUTH.jwtTokenSecret, {
-      expiresIn: appConfig.AUTH.expiresIn,
+    return sign({ id, username, roles }, APP_CONFIG.AUTH.jwtTokenSecret, {
+      expiresIn: APP_CONFIG.AUTH.expiresIn,
     });
   }
 

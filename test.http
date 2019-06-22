@@ -1,24 +1,32 @@
 ### register
-POST http://localhost:5000/api/register HTTP/1.1
+POST http://localhost:5000/register HTTP/1.1
 content-type: application/x-www-form-urlencoded
 
 username=username
 &password=password
 
 ### login
-POST http://localhost:5000/api/login HTTP/1.1
+POST http://localhost:5000/login HTTP/1.1
 content-type: application/x-www-form-urlencoded
 
 username=username
 &password=password
 
+### login json
+POST http://localhost:5000/login HTTP/1.1
+content-type: application/json
+
+{
+  "password": "password"
+}
+
 ### all users
-GET http://localhost:5000/api/user?page=1&pageSize=10 HTTP/1.1
+GET http://localhost:5000/user?page=1&pageSize=10 HTTP/1.1
 content-type: application/x-www-form-urlencoded
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExNjQ1YmVmLTI4N2MtNDIyMS04YmE0LWQwZDMzYjY0ODhhMSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJyb2xlcyI6IiIsImlhdCI6MTU2MDkzNzAwMiwiZXhwIjoxNTYwOTgwMjAyfQ.GDsbWyjj0BzAaJTSQn5Xk-DG5Tj4jYQEgW4W-hyGkgY
 
 ### upload file
-POST http://localhost:5000/api/upload
+POST http://localhost:5000/upload
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExNjQ1YmVmLTI4N2MtNDIyMS04YmE0LWQwZDMzYjY0ODhhMSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJyb2xlcyI6IiIsImlhdCI6MTU2MDkzNzAwMiwiZXhwIjoxNTYwOTgwMjAyfQ.GDsbWyjj0BzAaJTSQn5Xk-DG5Tj4jYQEgW4W-hyGkgY
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 

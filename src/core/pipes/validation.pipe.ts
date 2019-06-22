@@ -1,7 +1,14 @@
+/**
+ * Validation pipe.
+ * @file 数据表验证器
+ * @module pipe/validation
+ * @author Ryan <https://github.com/sirm2z>
+ */
+
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-import { ValidationException } from './validation.exception';
+import { ValidationException } from '../exceptions/validation.exception';
 
 /**
  * @class ValidationPipe

@@ -5,18 +5,17 @@
  * @author Ryan <https://github.com/sirm2z>
  */
 
-import * as path from 'path';
 import { ConnectionOptions } from 'typeorm';
 import { environment } from './app.environment';
 import { packageJson } from './shared/module.transform';
 
 export const APP = {
-  PORT: 5000,
+  PORT: process.env.PORT || 5000,
   ROOT_PATH: __dirname,
   NAME: 'Ryan',
   URL: 'https://www.ryanc.top',
   ENVIRONMENT: environment,
-  UPLOAD_PATH: process.env.UPLOAD_PATH,
+  UPLOAD_PATH: process.env.UPLOAD_PATH || 'uploads',
 };
 
 export const CROSS_DOMAIN = {
@@ -34,17 +33,17 @@ export const CROSS_DOMAIN = {
     'Content-Type',
     'X-E4M-With',
   ],
-  maxAge: (20 * 24 * 60 * 60).toString(),
+  maxAge: 20 * 24 * 60 * 60,
 };
 
 export const POSTGRESQL: ConnectionOptions = {
   name: 'default',
   type: 'postgres',
-  host: process.env.PSQL_HOST,
+  host: process.env.PSQL_HOST || 'localhost',
   port: 5432,
-  username: process.env.PSQL_USERNAME,
-  password: process.env.PSQL_PASSWORD,
-  database: process.env.PSQL_NAME,
+  username: process.env.PSQL_USERNAME || 'postgres',
+  password: process.env.PSQL_PASSWORD || '',
+  database: process.env.PSQL_NAME || 'nestjs',
   synchronize: true,
   dropSchema: false,
   logging: true,
