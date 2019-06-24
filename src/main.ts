@@ -7,7 +7,9 @@
 
 import 'dotenv/config';
 import { NestFactory, Reflector } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger } from '@nestjs/common';
+import { join } from 'path';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as APP_CONFIG from './app.config';
@@ -22,10 +24,11 @@ import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
 const port = APP_CONFIG.APP.PORT || 8080;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(helmet());
   app.use(compression());
   app.enableCors(corsOptions);
+  app.useStaticAssets(join(__dirname, '..', APP_CONFIG.APP.UPLOAD_PATH));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(

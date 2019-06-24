@@ -15,6 +15,8 @@ import {
   Res,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { join, extname } from 'path';
 import { HttpCache } from './core/decorators/cache.decorator';
 import * as CACHE_KEY from './constants/cache.constant';
 import * as APP_CONFIG from './app.config';
@@ -28,13 +30,32 @@ export class AppController {
   }
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: join(__dirname, '..', APP_CONFIG.APP.UPLOAD_PATH),
+        filename: (req, file, cb) => {
+          const filename = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          cb(
+            null,
+            `${filename}-${Date.now()}-${Math.round(
+              Math.random() * 1000000,
+            )}${extname(file.originalname)}`,
+          );
+        },
+      }),
+    }),
+  )
   uploadFile(@UploadedFile() file) {
     return {
-      imgUrl: `http://localhost:${APP_CONFIG.APP.PORT}/file/${file.filename}`,
+      imgUrl: `http://localhost:${APP_CONFIG.APP.PORT}/${file.filename}`,
     };
   }
 
+  // 改用静态文件目录代替
   @Get('file/:filepath')
   returnFile(@Param('filepath') file, @Res() res) {
     return res.sendFile(file, { root: APP_CONFIG.APP.UPLOAD_PATH });
