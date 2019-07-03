@@ -48,10 +48,7 @@ export class UserService {
     const { username, password } = data;
     const user = await this.userRepository.findOne({ where: { username } });
     if (!user || !(await user.comparePassword(password))) {
-      throw new HttpException(
-        'Invalid username/password',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('无效的 用户名/密码', HttpStatus.BAD_REQUEST);
     }
     return user.toResponseObject(true);
   }
