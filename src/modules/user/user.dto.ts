@@ -7,9 +7,20 @@
 
 import { IsNotEmpty } from 'class-validator';
 
-export class UserDTO {
+export class UserLoginDTO {
+  @IsNotEmpty({ message: '邮箱？' })
+  email: string;
+
+  @IsNotEmpty({ message: '密码？' })
+  password: string;
+}
+
+export class UserRegisterDTO {
   @IsNotEmpty({ message: '用户名？' })
   username: string;
+
+  @IsNotEmpty({ message: '邮箱？' })
+  email: string;
 
   @IsNotEmpty({ message: '密码？' })
   password: string;
@@ -19,6 +30,7 @@ export class UserDTO {
 
 export class UserRo {
   id: string;
+  email: string;
   username: string;
   created: string;
   roles: string;

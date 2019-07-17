@@ -9,7 +9,12 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
-import { UserRo, UserDTO, UserPaginateRo } from './user.dto';
+import {
+  UserRo,
+  UserLoginDTO,
+  UserRegisterDTO,
+  UserPaginateRo,
+} from './user.dto';
 
 @Injectable()
 export class UserService {
@@ -36,17 +41,17 @@ export class UserService {
   }
 
   // 查找某个用户
-  async findOne(username: string): Promise<UserRo> {
+  async findOne(email: string): Promise<UserRo> {
     const user = await this.userRepository.findOne({
-      where: { username },
+      where: { email },
     });
     return user.toResponseObject();
   }
 
   // 用户登录
-  async login(data: UserDTO): Promise<UserRo> {
-    const { username, password } = data;
-    const user = await this.userRepository.findOne({ where: { username } });
+  async login(data: UserLoginDTO): Promise<UserRo> {
+    const { email, password } = data;
+    const user = await this.userRepository.findOne({ where: { email } });
     if (!user || !(await user.comparePassword(password))) {
       throw new HttpException('无效的 用户名/密码', HttpStatus.BAD_REQUEST);
     }
@@ -54,11 +59,19 @@ export class UserService {
   }
 
   // 用户注册
-  async register(data: UserDTO): Promise<UserRo> {
-    const { username } = data;
-    let user = await this.userRepository.findOne({ where: { username } });
+  async register(data: UserRegisterDTO): Promise<UserRo> {
+    const { email, username } = data;
+    let user = await this.userRepository.findOne({
+      where: [{ email }, { username }],
+    });
     if (user) {
-      throw new HttpException('User alerady exists', HttpStatus.BAD_REQUEST);
+      let msg: string = '';
+      if (user.email === email) {
+        msg = '该邮箱已存在';
+      } else if (user.username === username) {
+        msg = '该用户名已存在';
+      }
+      throw new HttpException(msg, HttpStatus.BAD_REQUEST);
     }
     user = await this.userRepository.create(data);
     await this.userRepository.save(user);

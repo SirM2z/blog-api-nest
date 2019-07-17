@@ -30,6 +30,12 @@ export class UserEntity {
   })
   username: string;
 
+  @Column({
+    type: 'text',
+    unique: true,
+  })
+  email: string;
+
   @Column('text')
   password: string;
 
@@ -40,10 +46,14 @@ export class UserEntity {
   roles: string;
 
   private get token() {
-    const { id, username, roles } = this;
-    return sign({ id, username, roles }, APP_CONFIG.AUTH.jwtTokenSecret, {
-      expiresIn: APP_CONFIG.AUTH.expiresIn,
-    });
+    const { id, email, username, roles } = this;
+    return sign(
+      { id, email, username, roles },
+      APP_CONFIG.AUTH.jwtTokenSecret,
+      {
+        expiresIn: APP_CONFIG.AUTH.expiresIn,
+      },
+    );
   }
 
   @BeforeInsert()
@@ -56,8 +66,8 @@ export class UserEntity {
   }
 
   toResponseObject(showToken: boolean = false) {
-    const { id, created, username, roles, token } = this;
-    const responseObject: any = { id, created, username, roles };
+    const { id, created, email, username, roles, token } = this;
+    const responseObject: any = { id, created, email, username, roles };
     if (showToken) {
       responseObject.token = token;
     }

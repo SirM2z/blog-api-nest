@@ -7,7 +7,7 @@
 
 import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDTO } from './user.dto';
+import { UserLoginDTO, UserRegisterDTO } from './user.dto';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { HttpProcessor } from '../../core/decorators/http.decorator';
 
@@ -26,12 +26,12 @@ export class UserController {
   }
 
   @Post('login')
-  login(@Body() data: UserDTO) {
+  login(@Body() data: UserLoginDTO) {
     return this.userService.login(data);
   }
 
   @Post('register')
-  register(@Body() data: UserDTO) {
+  register(@Body() data: UserRegisterDTO) {
     return this.userService.register(data);
   }
 }
