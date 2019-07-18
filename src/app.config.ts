@@ -18,6 +18,13 @@ export const APP = {
   UPLOAD_PATH: process.env.UPLOAD_PATH || 'uploads',
 };
 
+export const ADMIN_USER = {
+  username: 'Ryan',
+  email: 'ryan@ryanc.top',
+  password: 'password',
+  roles: 'admin',
+};
+
 export const CROSS_DOMAIN = {
   allowedOrigins: ['http://localhost:3000', 'https://www.ryanc.top'],
   allowedHeaders: [

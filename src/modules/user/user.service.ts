@@ -5,7 +5,12 @@
  * @author Ryan <https://github.com/sirm2z>
  */
 
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  OnModuleInit,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
@@ -15,13 +20,33 @@ import {
   UserRegisterDTO,
   UserPaginateRo,
 } from './user.dto';
+import * as APP_CONFIG from '../../app.config';
 
 @Injectable()
-export class UserService {
+export class UserService implements OnModuleInit {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
+
+  // 初始化管理员账号
+  async onModuleInit() {
+    const user = await this.userRepository.findOne({
+      where: [
+        { email: APP_CONFIG.ADMIN_USER.email },
+        { username: APP_CONFIG.ADMIN_USER.username },
+      ],
+    });
+    if (!user) {
+      const admin = await this.userRepository.create({
+        email: APP_CONFIG.ADMIN_USER.email,
+        username: APP_CONFIG.ADMIN_USER.username,
+        password: APP_CONFIG.ADMIN_USER.password,
+        roles: APP_CONFIG.ADMIN_USER.roles,
+      });
+      await this.userRepository.save(admin);
+    }
+  }
 
   // 列出用户
   async listAll(
@@ -66,10 +91,10 @@ export class UserService {
     });
     if (user) {
       let msg: string = '';
-      if (user.email === email) {
-        msg = '该邮箱已存在';
-      } else if (user.username === username) {
+      if (user.username === username) {
         msg = '该用户名已存在';
+      } else if (user.email === email) {
+        msg = '该邮箱已存在';
       }
       throw new HttpException(msg, HttpStatus.BAD_REQUEST);
     }
