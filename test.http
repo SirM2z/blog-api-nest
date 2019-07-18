@@ -24,7 +24,7 @@ content-type: application/json
 ### all users
 GET http://localhost:5000/user?page=1&pageSize=10 HTTP/1.1
 content-type: application/x-www-form-urlencoded
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExNjQ1YmVmLTI4N2MtNDIyMS04YmE0LWQwZDMzYjY0ODhhMSIsInVzZXJuYW1lIjoidXNlcm5hbWUiLCJyb2xlcyI6IiIsImlhdCI6MTU2MDkzNzAwMiwiZXhwIjoxNTYwOTgwMjAyfQ.GDsbWyjj0BzAaJTSQn5Xk-DG5Tj4jYQEgW4W-hyGkgY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdhNWJhZTIxLTlhMDItNDMyNy1hMDMzLWJjNzhlZmQ0MjlmYiIsImVtYWlsIjoicnlhbkByeWFuYy50b3AiLCJ1c2VybmFtZSI6IlJ5YW4iLCJyb2xlcyI6ImFkbWluIiwiaWF0IjoxNTYzNDYwODQyLCJleHAiOjE1NjM1MDQwNDJ9._CwdTsXXtEI7V2pHM91o8FBLFPJU7ZqOWWtvBAcd56Y
 
 ### upload file
 POST http://localhost:5000/upload

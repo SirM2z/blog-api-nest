@@ -39,7 +39,8 @@ export class UserRo {
 
 export class UserPaginateRo {
   data: UserRo[];
-  pagination: {
-    total: number;
-  };
+  total: number;
+  currentPage: number;
+  totalPage: number;
+  perPage: number;
 }

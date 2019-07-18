@@ -30,7 +30,7 @@ export class UserService implements OnModuleInit {
   ) {}
 
   // 初始化管理员账号
-  async onModuleInit() {
+  async onModuleInit(): Promise<void> {
     const user = await this.userRepository.findOne({
       where: [
         { email: APP_CONFIG.ADMIN_USER.email },
@@ -59,9 +59,10 @@ export class UserService implements OnModuleInit {
     });
     return {
       data: users[0].map(user => user.toResponseObject()),
-      pagination: {
-        total: users[1],
-      },
+      total: users[1],
+      currentPage: page,
+      totalPage: Math.ceil(users[1] / pageSize),
+      perPage: pageSize,
     };
   }
 

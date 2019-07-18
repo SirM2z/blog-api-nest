@@ -25,17 +25,17 @@ import {
 
 // 转换为标准的数据结构
 export function transformDataToPaginate<T>(
-  data,
+  serviceRes,
   request?: any,
 ): IHttpResultPaginate<T[]> {
   return {
-    data: data.docs,
+    data: serviceRes.data,
     params: request ? request.queryParams : null,
     pagination: {
-      total: data.total,
-      current_page: data.page,
-      total_page: data.pages,
-      per_page: data.limit,
+      total: serviceRes.total,
+      current_page: serviceRes.currentPage,
+      total_page: serviceRes.totalPage,
+      per_page: serviceRes.perPage,
     },
   };
 }
@@ -74,10 +74,10 @@ export class TransformInterceptor<T>
       target,
     );
     return next.handle().pipe(
-      map((data: any) => {
+      map((serviceRes: any) => {
         const result = !usePaginate
-          ? data
-          : transformDataToPaginate<T>(data, request);
+          ? serviceRes
+          : transformDataToPaginate<T>(serviceRes, request);
         return { status: EHttpStatus.Success, message, result };
       }),
     );
