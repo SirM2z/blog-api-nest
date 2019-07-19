@@ -39,7 +39,7 @@ export class UserEntity {
   @Column('text')
   password: string;
 
-  @Column('text')
+  @Column({type: 'text', default: ''})
   roles: string;
 
   private get token() {

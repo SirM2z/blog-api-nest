@@ -7,7 +7,7 @@
 
 import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserLoginDTO, UserRegisterDTO } from './user.dto';
+import { UserLoginDTO, UserRegisterDTO, OrderString } from './user.dto';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { HttpProcessor } from '../../core/decorators/http.decorator';
 
@@ -19,10 +19,12 @@ export class UserController {
   @HttpProcessor.paginate()
   @UseGuards(new AuthGuard())
   showAllUsers(
-    @Query('page') page: number,
-    @Query('pageSize') pageSize: number,
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 10,
+    @Query('order') order: OrderString,
+    @Query('orderBy') orderBy: string = '',
   ) {
-    return this.userService.listAll(page, pageSize);
+    return this.userService.listAll(page, pageSize, order, orderBy);
   }
 
   @Post('login')

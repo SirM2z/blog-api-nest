@@ -19,6 +19,7 @@ import {
   UserLoginDTO,
   UserRegisterDTO,
   UserPaginateRo,
+  OrderString,
 } from './user.dto';
 import * as APP_CONFIG from '../../app.config';
 
@@ -50,13 +51,21 @@ export class UserService implements OnModuleInit {
 
   // 列出用户
   async listAll(
-    page: number = 1,
-    pageSize: number = 10,
+    page: number,
+    pageSize: number,
+    order: OrderString,
+    orderBy: string,
   ): Promise<UserPaginateRo> {
-    const users = await this.userRepository.findAndCount({
-      take: pageSize,
-      skip: pageSize * (page - 1),
-    });
+    const orderValue = {};
+    if (orderBy) {
+      orderValue[orderBy] = order;
+    }
+    const users = await this.userRepository
+      .createQueryBuilder()
+      .skip(pageSize * (page - 1))
+      .take(pageSize)
+      .orderBy(orderBy, order)
+      .getManyAndCount();
     return {
       data: users[0].map(user => user.toResponseObject()),
       total: users[1],

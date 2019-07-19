@@ -44,3 +44,5 @@ export class UserPaginateRo {
   totalPage: number;
   perPage: number;
 }
+
+export type OrderString = 'ASC' | 'DESC';
