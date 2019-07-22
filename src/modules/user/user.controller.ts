@@ -23,8 +23,9 @@ export class UserController {
     @Query('pageSize') pageSize: number = 10,
     @Query('order') order: OrderString,
     @Query('orderBy') orderBy: string = '',
+    @Query('search') search: string = '',
   ) {
-    return this.userService.listAll(page, pageSize, order, orderBy);
+    return this.userService.listAll(page, pageSize, order, orderBy, search);
   }
 
   @Post('login')

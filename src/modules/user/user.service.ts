@@ -55,6 +55,7 @@ export class UserService implements OnModuleInit {
     pageSize: number,
     order: OrderString,
     orderBy: string,
+    search: string,
   ): Promise<UserPaginateRo> {
     const orderValue = {};
     if (orderBy) {
@@ -62,6 +63,7 @@ export class UserService implements OnModuleInit {
     }
     const users = await this.userRepository
       .createQueryBuilder()
+      .where('username like :name', { name: `%${search}%` })
       .skip(pageSize * (page - 1))
       .take(pageSize)
       .orderBy(orderBy, order)
