@@ -26,7 +26,7 @@ export const ADMIN_USER = {
 };
 
 export const CROSS_DOMAIN = {
-  allowedOrigins: ['http://localhost:3000', 'https://www.ryanc.top'],
+  allowedOrigins: ['http://localhost:3000', 'https://www.ryanc.top', 'https://www.ryanc.tk'],
   allowedHeaders: [
     'Authorization',
     'Origin',
