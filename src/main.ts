@@ -20,11 +20,13 @@ import { ValidationPipe } from './core/pipes/validation.pipe';
 import { TransformInterceptor } from './core/interceptors/transform.interceptor';
 // import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
+import { SwaggerHelper } from './core/helper/swagger.helper';
 
 const port = APP_CONFIG.APP.PORT || 8080;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  SwaggerHelper(app);
   app.use(helmet());
   app.use(compression());
   app.enableCors(corsOptions);

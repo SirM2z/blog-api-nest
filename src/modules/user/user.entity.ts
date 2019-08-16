@@ -11,6 +11,7 @@ import {
   CreateDateColumn,
   Column,
   BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
@@ -39,7 +40,7 @@ export class UserEntity {
   @Column('text')
   password: string;
 
-  @Column({type: 'text', default: ''})
+  @Column({ type: 'text', default: '' })
   roles: string;
 
   private get token() {
@@ -54,7 +55,12 @@ export class UserEntity {
   }
 
   @BeforeInsert()
-  async hashPassword() {
+  async hashPasswordInsert() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  @BeforeUpdate()
+  async hashPasswordUpdate() {
     this.password = await bcrypt.hash(this.password, 10);
   }
 

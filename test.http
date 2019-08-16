@@ -1,5 +1,5 @@
 ### register
-POST http://localhost:5000/register HTTP/1.1
+POST http://localhost:5000/user/register HTTP/1.1
 content-type: application/x-www-form-urlencoded
 
 username=Ryan
@@ -7,14 +7,14 @@ username=Ryan
 &password=password
 
 ### login
-POST http://localhost:5000/login HTTP/1.1
+POST http://localhost:5000/user/login HTTP/1.1
 content-type: application/x-www-form-urlencoded
 
 email=ryan@ryanc.top
 &password=password
 
 ### login json
-POST http://localhost:5000/login HTTP/1.1
+POST http://localhost:5000/user/login HTTP/1.1
 content-type: application/json
 
 {

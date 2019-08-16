@@ -14,6 +14,7 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
+import { ApiUseTags, ApiConsumes, ApiImplicitFile } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { join, extname } from 'path';
@@ -21,6 +22,7 @@ import { HttpCache } from './core/decorators/cache.decorator';
 import * as CACHE_KEY from './constants/cache.constant';
 import * as APP_CONFIG from './app.config';
 
+@ApiUseTags('app')
 @Controller()
 export class AppController {
   @Get()
@@ -30,6 +32,8 @@ export class AppController {
   }
 
   @Post('upload')
+  @ApiConsumes('multipart/form-data')
+  @ApiImplicitFile({ name: 'file', required: true, description: 'img' })
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({

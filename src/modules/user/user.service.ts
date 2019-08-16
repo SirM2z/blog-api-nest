@@ -18,6 +18,7 @@ import {
   UserRo,
   UserLoginDTO,
   UserRegisterDTO,
+  UserUpdateDTO,
   UserPaginateRo,
   OrderString,
 } from './user.dto';
@@ -113,5 +114,27 @@ export class UserService implements OnModuleInit {
     user = await this.userRepository.create(data);
     await this.userRepository.save(user);
     return user.toResponseObject();
+  }
+
+  // 用户修改 用户名 或 密码
+  async update(
+    id: string,
+    userId: string,
+    data: Partial<UserUpdateDTO>,
+  ): Promise<UserRo> {
+    const { username } = data;
+    let user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new HttpException('NOT FOUND', HttpStatus.NOT_FOUND);
+    }
+    if (username) {
+      user = await this.userRepository.findOne({ where: { username } });
+      if (user && user.id !== id) {
+        throw new HttpException('该用户名已存在', HttpStatus.BAD_REQUEST);
+      }
+    }
+    await this.userRepository.update({ id }, data);
+    user = await this.userRepository.findOne({ where: { id } });
+    return user.toResponseObject(true);
   }
 }

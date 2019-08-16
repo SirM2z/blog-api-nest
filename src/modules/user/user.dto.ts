@@ -5,27 +5,43 @@
  * @author Ryan <https://github.com/sirm2z>
  */
 
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { ApiModelProperty } from '@nestjs/swagger';
 
 export class UserLoginDTO {
+  @ApiModelProperty()
   @IsNotEmpty({ message: '邮箱？' })
   email: string;
 
+  @ApiModelProperty()
   @IsNotEmpty({ message: '密码？' })
   password: string;
 }
 
 export class UserRegisterDTO {
+  @ApiModelProperty()
   @IsNotEmpty({ message: '用户名？' })
   username: string;
 
+  @ApiModelProperty()
   @IsNotEmpty({ message: '邮箱？' })
   email: string;
 
+  @ApiModelProperty()
   @IsNotEmpty({ message: '密码？' })
   password: string;
 
   roles?: string;
+}
+
+export class UserUpdateDTO {
+  @ApiModelProperty()
+  @IsString()
+  username: string;
+
+  @ApiModelProperty()
+  @IsString()
+  password: string;
 }
 
 export class UserRo {
